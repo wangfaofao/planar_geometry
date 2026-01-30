@@ -4,7 +4,8 @@ planar_geometry/measurable.py
 
 模块: 可计算度量抽象基类
 描述: 定义几何元素的抽象基类层次，基于SOLID原则
-版本: 0.1.0
+版本: 0.01
+作者: wangheng <wangfaofao@gmail.com>
 
 功能:
     - Measurable: 可计算度量根抽象类
@@ -13,15 +14,12 @@ planar_geometry/measurable.py
 
 依赖:
     - abc: 抽象基类模块
+
+使用示例:
+    from planar_geometry.measurable import Measurable1D, Measurable2D
 """
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from planar_geometry.point import Point2D
-    from planar_geometry.curve import Curve
-    from planar_geometry.surface import Surface
 
 
 class Measurable(ABC):
