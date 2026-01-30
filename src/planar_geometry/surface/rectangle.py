@@ -21,10 +21,11 @@ import math
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 from planar_geometry.abstracts import Surface
+from planar_geometry.point import Point2D
+from planar_geometry.curve import Vector2D
 
 if TYPE_CHECKING:
-    from planar_geometry.point import Point2D
-    from planar_geometry.curve import Vector2D
+    pass
 
 
 class Rectangle(Surface):
@@ -246,5 +247,3 @@ class Rectangle(Surface):
 
     def __repr__(self) -> str:
         return f"Rectangle({self.vertices[0]}, {self.vertices[1]}, {self.vertices[2]}, {self.vertices[3]})"
-
-

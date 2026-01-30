@@ -21,9 +21,10 @@ import math
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 from planar_geometry.abstracts import Surface
+from planar_geometry.point import Point2D
+from planar_geometry.curve import LineSegment
 
 if TYPE_CHECKING:
-    from planar_geometry.point import Point2D
     from planar_geometry.curve import Vector2D
 
 
@@ -372,6 +373,8 @@ class Polygon(Surface):
         返回:
             bool: 是否为简单多边形
         """
+        from planar_geometry.utils import line_segment_intersection
+
         n = len(self.vertices)
         edges = self.get_edges()
 
@@ -492,5 +495,3 @@ class Polygon(Surface):
 
     def __repr__(self) -> str:
         return f"Polygon({self.vertices})"
-
-

@@ -561,4 +561,3 @@ def _point_in_list(point: "Point2D", points: List["Point2D"], tolerance: float) 
 
 from planar_geometry.point import Point2D
 from planar_geometry.curve import LineSegment, Line, Vector2D
-from planar_geometry.surface import Rectangle, Polygon

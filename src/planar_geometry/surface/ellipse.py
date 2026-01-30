@@ -21,9 +21,9 @@ import math
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 from planar_geometry.abstracts import Surface
+from planar_geometry.point import Point2D
 
 if TYPE_CHECKING:
-    from planar_geometry.point import Point2D
     from planar_geometry.curve import Vector2D
 
 
@@ -344,4 +344,4 @@ class Ellipse(Surface):
 
 from planar_geometry.point import Point2D
 from planar_geometry.curve import Vector2D, LineSegment
-from planar_geometry.geometry_utils import line_segment_intersection
+from planar_geometry.utils import line_segment_intersection

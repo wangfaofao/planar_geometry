@@ -68,14 +68,17 @@ class Line(Curve):
         计算两条直线的交点
 
         说明:
-            - 平行线返回 None
+            - 平行线将抛出 ValueError 异常
 
         Args:
             other: Line - 另一条直线
             tolerance: float - 容差
 
         返回:
-            Point2D | None: 交点，若平行则返回 None
+            Point2D: 交点
+
+        异常:
+            ValueError: 两条直线平行
         """
         # 获取两条直线的方向向量
         d1_x = self.direction.x
@@ -87,7 +90,7 @@ class Line(Curve):
         cross = d1_x * d2_y - d1_y * d2_x
 
         if abs(cross) < tolerance:  # 平行或重合
-            return None
+            raise ValueError("Lines are parallel and do not intersect")
 
         # 参数 t
         dx = other.point.x - self.point.x

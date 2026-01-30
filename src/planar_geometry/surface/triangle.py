@@ -21,9 +21,11 @@ import math
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 from planar_geometry.abstracts import Surface
+from planar_geometry.surface.polygon import Polygon
+from planar_geometry.surface.circle import Circle
+from planar_geometry.point import Point2D
 
 if TYPE_CHECKING:
-    from planar_geometry.point import Point2D
     from planar_geometry.curve import Vector2D
 
 
@@ -366,5 +368,3 @@ class Triangle(Polygon):
 
     def __repr__(self) -> str:
         return f"Triangle({self.vertices[0]}, {self.vertices[1]}, {self.vertices[2]})"
-
-
