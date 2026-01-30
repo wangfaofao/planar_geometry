@@ -27,7 +27,14 @@ planar_geometry
 from planar_geometry.measurable import Measurable, Measurable1D, Measurable2D
 from planar_geometry.point import Point2D
 from planar_geometry.curve import Curve, LineSegment, Line, Vector2D
-from planar_geometry.surface import Surface, Rectangle, Circle, Polygon
+from planar_geometry.surface import (
+    Surface,
+    Rectangle,
+    Circle,
+    Polygon,
+    Triangle,
+    Ellipse,
+)
 from planar_geometry.geometry_utils import (
     line_segment_intersection,
     line_intersection,
@@ -62,6 +69,8 @@ __all__ = [
     "Rectangle",
     "Circle",
     "Polygon",
+    "Triangle",
+    "Ellipse",
     "line_segment_intersection",
     "line_intersection",
     "rectangle_intersection_points",
