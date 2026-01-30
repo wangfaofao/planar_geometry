@@ -1,0 +1,14 @@
+[project]
+name = "planar_geometry"
+version = "0.1.0"
+description = "A planar geometry library with SOLID principles, designed for Cython optimization"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = []
