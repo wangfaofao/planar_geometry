@@ -24,7 +24,7 @@ planar_geometry/point.py
 
 import math
 
-from planar_geometry.measurable import Measurable1D
+from planar_geometry.abstracts import Measurable1D
 
 
 class Point2D(Measurable1D):

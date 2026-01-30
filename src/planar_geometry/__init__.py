@@ -24,18 +24,23 @@ planar_geometry
     print(rect.area())
 """
 
-from planar_geometry.measurable import Measurable, Measurable1D, Measurable2D
-from planar_geometry.point import Point2D
-from planar_geometry.curve import Curve, LineSegment, Line, Vector2D
-from planar_geometry.surface import (
+from planar_geometry.abstracts import (
+    Measurable,
+    Measurable1D,
+    Measurable2D,
+    Curve,
     Surface,
+)
+from planar_geometry.point import Point2D
+from planar_geometry.curve import LineSegment, Line, Vector2D
+from planar_geometry.surface import (
     Rectangle,
     Circle,
     Polygon,
     Triangle,
     Ellipse,
 )
-from planar_geometry.geometry_utils import (
+from planar_geometry.utils import (
     line_segment_intersection,
     line_intersection,
     rectangle_intersection_points,

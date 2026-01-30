@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-planar_geometry/measurable.py
+planar_geometry/abstracts/__init__.py
 
-模块: 可计算度量抽象基类
-描述: 定义几何元素的抽象基类层次，基于SOLID原则
-版本: 0.01
+模块: 抽象基类模块
+描述: 定义所有几何元素的抽象基类层次
+版本: 0.1.0
 作者: wangheng <wangfaofao@gmail.com>
 
 功能:
     - Measurable: 可计算度量根抽象类
     - Measurable1D: 可计算长度抽象类
     - Measurable2D: 可计算面积抽象类
-
-依赖:
-    - abc: 抽象基类模块
+    - Curve: 曲线抽象类
+    - Surface: 曲面抽象类
 
 使用示例:
-    from planar_geometry.measurable import Measurable1D, Measurable2D
+    from planar_geometry.abstracts import Measurable1D, Measurable2D
 """
 
 from abc import ABC, abstractmethod
@@ -131,3 +130,54 @@ class Measurable2D(Measurable1D, ABC):
             float: 周长值
         """
         pass
+
+
+class Curve(Measurable1D, ABC):
+    """
+    曲线抽象基类（一维几何元素）
+
+    说明:
+        - 继承Measurable1D
+        - 抽象化一维几何元素的行为
+
+    设计原则:
+        - ISP: 只暴露曲线相关接口
+    """
+
+    @abstractmethod
+    def __repr__(self) -> str:
+        pass
+
+    @abstractmethod
+    def length(self) -> float:
+        pass
+
+
+class Surface(Measurable2D, ABC):
+    """
+    曲面/平面图形抽象基类（二维几何元素）
+
+    说明:
+        - 继承Measurable2D
+        - 抽象化二维几何元素的行为
+
+    设计原则:
+        - ISP: 只暴露曲面相关接口
+    """
+
+    @abstractmethod
+    def area(self) -> float:
+        pass
+
+    @abstractmethod
+    def perimeter(self) -> float:
+        pass
+
+
+__all__ = [
+    "Measurable",
+    "Measurable1D",
+    "Measurable2D",
+    "Curve",
+    "Surface",
+]
