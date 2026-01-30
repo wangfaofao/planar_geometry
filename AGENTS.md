@@ -526,26 +526,102 @@ def centroid(points: List[Point2D]) -> Point2D:
 
 ## 4. 项目结构
 
+### 4.1 新的模块化架构
+
 ```
 planar_geometry/
 ├── src/planar_geometry/
-│   ├── __init__.py              # 模块导出（27个导出项）
-│   ├── measurable.py            # 抽象基类（3个类）
-│   ├── point.py                 # Point2D（33个方法）
-│   ├── curve.py                 # Curve, LineSegment, Line, Vector2D（54个方法）
-│   ├── surface.py               # Surface, Rectangle, Circle, Polygon（50+方法）
-│   └── geometry_utils.py        # 独立函数（20个函数）
+│   ├── __init__.py                      # 主导出（40个导出项）
+│   │
+│   ├── abstracts/                       # 抽象基类包
+│   │   └── __init__.py                  # 5个抽象类
+│   │       ├── Measurable               # 根抽象类
+│   │       ├── Measurable1D             # 一维测量接口
+│   │       ├── Measurable2D             # 二维测量接口
+│   │       ├── Curve                    # 曲线抽象类
+│   │       └── Surface                  # 曲面抽象类
+│   │
+│   ├── point/                           # 点模块包
+│   │   ├── __init__.py                  # 导出入口
+│   │   └── point2d.py                   # Point2D 类（33个方法）
+│   │
+│   ├── curve/                           # 曲线模块包（3个子模块）
+│   │   ├── __init__.py                  # 导出入口
+│   │   ├── line_segment.py              # LineSegment 类（7个方法）
+│   │   ├── line.py                      # Line 类（5个方法）
+│   │   └── vector2d.py                  # Vector2D 类（39个方法）
+│   │
+│   ├── surface/                         # 曲面模块包（5个子模块）
+│   │   ├── __init__.py                  # 导出入口
+│   │   ├── rectangle.py                 # Rectangle 类（8个方法）
+│   │   ├── circle.py                    # Circle 类（7个方法）
+│   │   ├── polygon.py                   # Polygon 类（18个方法）
+│   │   ├── triangle.py                  # Triangle 类（14个方法）
+│   │   └── ellipse.py                   # Ellipse 类（11个方法）
+│   │
+│   └── utils/                           # 工具函数包
+│       ├── __init__.py                  # 导出入口（18个函数）
+│       └── geometry_utils.py            # 所有工具函数实现
+│           ├── 交点计算: 4 个函数
+│           ├── 距离计算: 8 个函数
+│           ├── 角度计算: 4 个函数
+│           └── 点集工具: 2 个函数
+│
 ├── tests/
-│   ├── test_point.py            # 33个测试
-│   ├── test_curve.py            # 54个测试
-│   ├── test_surface.py          # 50个测试
-│   └── test_geometry_utils.py   # 31个测试
-├── AGENTS.md                    # 设计文档
-├── README.md                    # 项目说明
-└── pyproject.toml               # Python包配置
+│   ├── test_point.py                    # Point2D 测试（33个）
+│   ├── test_curve.py                    # Curve 模块测试（54个）
+│   ├── test_surface.py                  # Surface 模块测试（50个）
+│   ├── test_geometry_utils.py           # 工具函数测试（31个）
+│   ├── test_geometry.py                 # 集成测试
+│   └── test_triangle_ellipse.py         # 三角形/椭圆测试
+│
+├── AGENTS.md                            # 项目设计文档
+├── README.md                            # 项目说明文档
+└── pyproject.toml                       # Python 包配置
 ```
 
----
+### 4.2 模块化优势
+
+| 优势 | 说明 |
+|------|------|
+| **单一职责** | 每个模块只负责一类几何元素 |
+| **易于维护** | 代码分散在多个小文件中，每个文件清晰 |
+| **快速导入** | 按需加载，可以只导入需要的模块 |
+| **扩展性强** | 新增几何类只需在相应包中新增模块 |
+| **Cython 友好** | 细粒度模块便于编译优化 |
+| **向后兼容** | 保持顶级导入不变，现有代码无需修改 |
+
+### 4.3 导入方式
+
+**方式1: 顶级导入（推荐，向后兼容）**
+```python
+from planar_geometry import (
+    Point2D, Vector2D,
+    LineSegment, Line,
+    Rectangle, Circle, Polygon, Triangle, Ellipse,
+    line_segment_intersection,
+    bounding_box,
+    centroid
+)
+```
+
+**方式2: 包级导入**
+```python
+from planar_geometry.point import Point2D
+from planar_geometry.curve import Vector2D, LineSegment, Line
+from planar_geometry.surface import Rectangle, Circle, Polygon, Triangle, Ellipse
+from planar_geometry.utils import line_segment_intersection, bounding_box, centroid
+```
+
+**方式3: 细粒度导入**
+```python
+from planar_geometry.point.point2d import Point2D
+from planar_geometry.curve.vector2d import Vector2D
+from planar_geometry.surface.rectangle import Rectangle
+from planar_geometry.utils.geometry_utils import line_segment_intersection
+```
+
+
 
 ## 5. 测试统计
 
@@ -555,7 +631,9 @@ planar_geometry/
 | test_curve.py | 54 | ✅ 全部通过 |
 | test_surface.py | 50 | ✅ 全部通过 |
 | test_geometry_utils.py | 31 | ✅ 全部通过 |
-| **总计** | **187** | **✅ 187/187 通过** |
+| test_geometry.py | 29 | ✅ 全部通过 |
+| test_triangle_ellipse.py | 34 | ✅ 全部通过 |
+| **总计** | **231** | **✅ 231/231 通过** |
 
 ---
 
@@ -571,22 +649,47 @@ planar_geometry/
 
 ### 已完成功能
 
-| 阶段 | 模块 | 功能数 | 测试数 |
-|------|------|-------|-------|
-| 1 | measurable + point | 33 | 33 |
-| 2 | curve (Vector2D, LineSegment, Line) | 54 | 54 |
-| 3 | surface (Rectangle, Circle, Polygon) | 50+ | 50 |
-| 4 | geometry_utils (跨对象关系) | 20 | 31 |
+| 阶段 | 模块 | 功能数 | 测试数 | 状态 |
+|------|------|-------|-------|------|
+| 1 | measurable + point | 33 | 33 | ✅ 完成 |
+| 2 | curve (Vector2D, LineSegment, Line) | 54 | 54 | ✅ 完成 |
+| 3 | surface (Rectangle, Circle, Polygon) | 50+ | 50 | ✅ 完成 |
+| 4 | geometry_utils (跨对象关系) | 20 | 31 | ✅ 完成 |
+| 5 | Triangle + Ellipse | 25 | 34 | ✅ 完成 |
+| 6 | 项目模块化重构 | - | 231 | ✅ 完成 |
+| 7 | 修复导入问题 & 完善文档 | - | 231 | ✅ 完成 |
+
+### 最新更新 (2026-01-31)
+
+**模块化架构重构完成**
+- ✅ 创建模块化目录结构（abstracts, point, curve, surface, utils 5个包）
+- ✅ 修复所有导入问题，解决循环依赖
+- ✅ 为每个包添加详细的中英文文档
+- ✅ 所有 231 个单元测试通过
+- ✅ 保持 100% 向后兼容（顶级导入方式不变）
+
+**修复的问题**
+- 创建缺失的 surface/__init__.py
+- 修复 Triangle, Rectangle, Circle, Ellipse 的运行时导入
+- 解决 Polygon 和 geometry_utils 之间的循环导入
+- 修复 Line.get_intersection() 处理平行线的行为
 
 ### 下一步计划
 
-1. **第五阶段**: 更新 AGENTS.md 文档
-2. **后续扩展**:
-   - 添加 Triangle（三角形）类
-   - 添加 Ellipse（椭圆）类
+1. **性能优化**:
+   - 添加 Cython 编译配置
+   - 性能基准测试
+   - 优化热点代码
+
+2. **功能扩展**:
    - 添加 Path（路径）类
    - 添加 Transform（2D变换）模块
-   - Cython 性能优化
+   - 添加更多集何算法
+
+3. **生态建设**:
+   - 编写完整的 API 文档
+   - 创建快速入门教程
+   - 发布到 PyPI
 
 ---
 
