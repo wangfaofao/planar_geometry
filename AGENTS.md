@@ -1,7 +1,7 @@
 # planar_geometry - 平面几何计算库
 
-**版本**: 0.01  
-**状态**: 开发中
+**版本**: 0.1.0  
+**状态**: 稳定版本（完全实现）
 
 ---
 
@@ -80,449 +80,245 @@ Measurable (可计算度量根抽象类)
 
 ## 3. 模块说明
 
-### 3.1 measurable.py - 抽象基类模块
+### 3.1 abstracts/ - 抽象基类模块
+
+模块位置：`planar_geometry/abstracts/__init__.py`
+
+**功能**: 定义所有几何元素的抽象基类层次结构
 
 ```python
 class Measurable(ABC):
-    """可计算度量根抽象类"""
+    """可计算度量根抽象类 - 所有几何元素的基础"""
     @abstractmethod
     def __repr__(self) -> str:
-        pass
+        """字符串表示"""
 
 class Measurable1D(Measurable, ABC):
-    """可计算长度抽象类"""
+    """可计算长度抽象类 - 具有长度的几何元素"""
     @abstractmethod
     def length(self) -> float:
-        pass
+        """返回长度值"""
 
 class Measurable2D(Measurable1D, ABC):
-    """可计算面积抽象类"""
+    """可计算面积抽象类 - 二维几何元素"""
     @abstractmethod
     def area(self) -> float:
-        pass
+        """返回面积值"""
+    
+    @abstractmethod
+    def perimeter(self) -> float:
+        """返回周长值"""
     
     def length(self) -> float:
         """二维图形的长度即周长"""
         return self.perimeter()
-    
-    @abstractmethod
-    def perimeter(self) -> float:
-        pass
-```
 
-### 3.2 point.py - 点模块
-
-```python
-class Point2D(Measurable1D):
-    """二维点类"""
-    
-    def __init__(self, x: float, y: float) -> None:
-        self.x = x
-        self.y = y
-    
-    # 度量接口
-    def length(self) -> float:
-        return 0.0
-    
-    # 距离计算
-    def distance_to(self, other: 'Point2D') -> float:
-        return math.sqrt(dx*dx + dy*dy)
-    
-    def distance_squared_to(self, other: 'Point2D') -> float:
-        return dx*dx + dy*dy
-    
-    def midpoint_to(self, other: 'Point2D') -> 'Point2D':
-        return Point2D((self.x + other.x) / 2, (self.y + other.y) / 2)
-    
-    # 算术运算
-    def add(self, dx: float, dy: float) -> 'Point2D':
-        return Point2D(self.x + dx, self.y + dy)
-    
-    def multiply(self, scalar: float) -> 'Point2D':
-        return Point2D(self.x * scalar, self.y * scalar)
-    
-    def negate(self) -> 'Point2D':
-        return Point2D(-self.x, -self.y)
-    
-    def equals(self, other: 'Point2D', tolerance: float = 1e-9) -> bool:
-        return abs(self.x - other.x) < tolerance and abs(self.y - other.y) < tolerance
-    
-    def is_zero(self, tolerance: float = 1e-9) -> bool:
-        return abs(self.x) < tolerance and abs(self.y) < tolerance
-    
-    # 转换方法
-    def to_tuple(self) -> tuple:
-        return (self.x, self.y)
-    
-    @staticmethod
-    def from_tuple(data: tuple) -> 'Point2D':
-        return Point2D(data[0], data[1])
-    
-    @staticmethod
-    def origin() -> 'Point2D':
-        return Point2D(0.0, 0.0)
-    
-    # 运算符重载
-    def __add__(self, other: tuple) -> 'Point2D': ...
-    def __sub__(self, other: 'Point2D') -> tuple: ...
-    def __mul__(self, scalar: float) -> 'Point2D': ...
-    def __rmul__(self, scalar: float) -> 'Point2D': ...
-    def __truediv__(self, scalar: float) -> 'Point2D': ...
-    def __eq__(self, other: object) -> bool: ...
-    def __hash__(self) -> int: ...
-    def __repr__(self) -> str: ...
-```
-
-### 3.3 curve.py - 曲线模块
-
-```python
 class Curve(Measurable1D, ABC):
-    """曲线抽象基类（一维几何元素）"""
+    """曲线抽象基类 - 一维几何元素"""
     @abstractmethod
     def length(self) -> float:
-        pass
+        """返回曲线长度"""
 
-class LineSegment(Curve):
-    """线段类"""
-    
-    def __init__(self, start: Point2D, end: Point2D) -> None:
-        self.start = start
-        self.end = end
-    
-    def length(self) -> float:
-        return self.start.distance_to(self.end)
-    
-    def midpoint(self) -> Point2D:
-        return self.start.midpoint_to(self.end)
-    
-    def direction(self) -> Vector2D:
-        """获取线段方向向量（归一化）"""
-        dx = self.end.x - self.start.x
-        dy = self.end.y - self.start.y
-        v = Vector2D(dx, dy)
-        return v.normalized()
-    
-    def contains_point(self, point: Point2D, tolerance: float = 1e-9) -> bool:
-        """判断点是否在线段上（含端点）"""
-    
-    def get_parameter(self, point: Point2D) -> float:
-        """获取点在直线上的参数 t"""
-    
-    def get_closest_point(self, point: Point2D) -> Point2D:
-        """获取线段上离给定点最近的点"""
-    
-    def get_distance_to_point(self, point: Point2D) -> float:
-        """计算点到线段的最短距离"""
-
-class Line(Curve):
-    """直线类（无限延伸）"""
-    
-    def __init__(self, point: Point2D, direction: Vector2D) -> None:
-        self.point = point
-        self.direction = direction.normalized()
-    
-    def length(self) -> float:
-        return float('inf')
-    
-    def get_intersection(self, other: 'Line') -> Point2D:
-        """计算与另一条直线的交点"""
-    
-    def get_distance_to_point(self, point: Point2D) -> float:
-        """计算点到直线的距离"""
-    
-    def get_closest_point(self, point: Point2D) -> Point2D:
-        """获取直线上离给定点最近的点（垂足）"""
-    
-    def contains_point(self, point: Point2D, tolerance: float = 1e-9) -> bool:
-        """判断点是否在直线上"""
-
-class Vector2D(Curve):
-    """二维向量类"""
-    
-    def __init__(self, x: float, y: float) -> None:
-        self.x = x
-        self.y = y
-    
-    def length(self) -> float:
-        return math.sqrt(self.x*self.x + self.y*self.y)
-    
-    def length_squared(self) -> float:
-        return self.x*self.x + self.y*self.y
-    
-    def angle(self) -> float:
-        """计算向量角度（度）[0, 360)"""
-    
-    def angle_rad(self) -> float:
-        """计算向量角度（弧度）[0, 2π)"""
-    
-    def normalized(self) -> 'Vector2D':
-        """返回归一化向量"""
-    
-    def dot(self, other: 'Vector2D') -> float:
-        """点积"""
-    
-    def cross(self, other: 'Vector2D') -> float:
-        """叉积（二维，标量）"""
-    
-    def perpendicular(self) -> 'Vector2D':
-        """获取垂直向量（逆时针旋转90度）"""
-    
-    def rotated(self, angle_deg: float) -> 'Vector2D':
-        """旋转向量"""
-    
-    def projection(self, other: 'Vector2D') -> 'Vector2D':
-        """投影到另一向量"""
-    
-    def component(self, direction: 'Vector2D') -> float:
-        """获取在指定方向上的分量（标量投影）"""
-    
-    def is_zero(self, tolerance: float = 1e-9) -> bool:
-        return abs(self.x) < tolerance and abs(self.y) < tolerance
-    
-    def equals(self, other: 'Vector2D', tolerance: float = 1e-9) -> bool:
-        return abs(self.x - other.x) < tolerance and abs(self.y - other.y) < tolerance
-    
-    @staticmethod
-    def zero() -> 'Vector2D':
-        return Vector2D(0, 0)
-    
-    @staticmethod
-    def unit_x() -> 'Vector2D':
-        return Vector2D(1, 0)
-    
-    @staticmethod
-    def unit_y() -> 'Vector2D':
-        return Vector2D(0, 1)
-```
-
-### 3.4 surface.py - 曲面模块
-
-```python
 class Surface(Measurable2D, ABC):
-    """曲面/平面图形抽象基类"""
+    """曲面/平面图形抽象基类 - 二维几何元素"""
     @abstractmethod
     def area(self) -> float:
-        pass
+        """返回图形面积"""
     
     @abstractmethod
     def perimeter(self) -> float:
-        pass
-
-class Rectangle(Surface):
-    """矩形类"""
-    
-    def __init__(self, vertices: List[Point2D]) -> None:
-        if len(vertices) != 4:
-            raise ValueError("矩形必须有4个顶点")
-        self.vertices = vertices
-    
-    @staticmethod
-    def from_center_and_size(center: Point2D, size: float, direction: Vector2D) -> 'Rectangle':
-        """工厂方法：从中心点创建矩形"""
-    
-    @staticmethod
-    def from_bounds(x_min: float, y_min: float, x_max: float, y_max: float) -> 'Rectangle':
-        """工厂方法：从边界框创建矩形"""
-    
-    def area(self) -> float:
-        return width * height
-    
-    def perimeter(self) -> float:
-        return 2.0 * (width + height)
-    
-    def get_bounds(self) -> tuple:
-        """获取轴对齐边界框 (AABB)"""
-    
-    def get_edges(self) -> List[tuple]:
-        """获取4条边"""
-    
-    def get_edge_count(self) -> int:
-        return 4
-    
-    def get_vertex_count(self) -> int:
-        return 4
-    
-    def get_center(self) -> Point2D:
-        """获取矩形中心点"""
-    
-    def contains_point(self, point: Point2D) -> bool:
-        """判断点是否在矩形内或边界上"""
-    
-    def is_square(self, tolerance: float = 1e-6) -> bool:
-        """判断是否为正方形"""
-
-class Circle(Surface):
-    """圆形类"""
-    
-    def __init__(self, center: Point2D, radius: float) -> None:
-        if radius < 0:
-            raise ValueError("半径不能为负数")
-        self.center = center
-        self.radius = radius
-    
-    @staticmethod
-    def from_diameter(p1: Point2D, p2: Point2D) -> 'Circle':
-        """工厂方法：从直径创建圆形"""
-    
-    def area(self) -> float:
-        return math.pi * self.radius * self.radius
-    
-    def perimeter(self) -> float:
-        return 2.0 * math.pi * self.radius
-    
-    def get_bounds(self) -> tuple:
-        return (center.x - radius, center.y - radius, center.x + radius, center.y + radius)
-    
-    def get_center(self) -> Point2D:
-        return self.center
-    
-    def contains_point(self, point: Point2D) -> bool:
-        """判断点是否在圆内或圆上"""
-    
-    def get_circumference(self) -> float:
-        """获取圆周长（别名）"""
-    
-    def equals(self, other: 'Circle', tolerance: float = 1e-6) -> bool:
-        """判断与另一圆是否相等"""
-
-class Polygon(Surface):
-    """多边形类"""
-    
-    def __init__(self, vertices: List[Point2D]) -> None:
-        if len(vertices) < 3:
-            raise ValueError("多边形至少有3个顶点")
-        self.vertices = vertices
-    
-    @staticmethod
-    def from_points(points: List[Point2D]) -> 'Polygon':
-        """工厂方法：从点列表创建"""
-    
-    @staticmethod
-    def regular(n: int, center: Point2D, radius: float, rotation: float = 0.0) -> 'Polygon':
-        """工厂方法：创建正多边形"""
-    
-    @staticmethod
-    def triangle(p1: Point2D, p2: Point2D, p3: Point2D) -> 'Polygon':
-        """工厂方法：从三个点创建三角形"""
-    
-    @staticmethod
-    def rectangle(p1: Point2D, p2: Point2D, p3: Point2D, p4: Point2D) -> 'Polygon':
-        """工厂方法：从四个点创建四边形"""
-    
-    def area(self) -> float:
-        """鞋带公式计算面积"""
-    
-    def perimeter(self) -> float:
-        """计算周长"""
-    
-    def get_bounds(self) -> tuple:
-        """获取轴对齐边界框 (AABB)"""
-    
-    def get_center(self) -> Point2D:
-        """获取多边形中心（重心）"""
-    
-    def centroid(self) -> Point2D:
-        """获取多边形质心"""
-    
-    def get_edges(self) -> List[tuple]:
-        """获取所有边"""
-    
-    def get_edge_count(self) -> int:
-        return len(self.vertices)
-    
-    def get_vertex_count(self) -> int:
-        return len(self.vertices)
-    
-    def get_vertex(self, index: int) -> Point2D:
-        """获取指定索引的顶点"""
-    
-    def get_edge(self, index: int) -> tuple:
-        """获取指定索引的边"""
-    
-    def contains_point(self, point: Point2D) -> bool:
-        """射线投射算法判断点是否在多边形内"""
-    
-    def is_convex(self) -> bool:
-        """判断是否为凸多边形"""
-    
-    def is_simple(self) -> bool:
-        """判断是否为简单多边形（不自交）"""
-    
-    def is_regular(self) -> bool:
-        """判断是否为正多边形"""
-    
-    def get_convex_hull(self) -> 'Polygon':
-        """Graham Scan 算法计算凸包"""
+        """返回图形周长"""
 ```
 
-### 3.5 geometry_utils.py - 工具函数模块
+### 3.2 point/ - 点模块
 
+模块位置：`planar_geometry/point/point2d.py`
+
+**类**: Point2D（二维点）  
+**方法数**: 17个  
+**继承自**: Measurable1D
+
+**核心方法**:
+- `distance_to()` - 计算到另一点的距离
+- `distance_squared_to()` - 计算距离的平方
+- `midpoint_to()` - 计算中点
+- `add(dx, dy)` - 平移点
+- `multiply(scalar)` - 缩放点
+- `negate()` - 取反
+- `equals()` - 相等性判断
+- `is_zero()` - 是否为原点
+- `to_tuple()` / `from_tuple()` - 元组转换
+- 运算符重载：`+`, `-`, `*`, `/`, `==`, `hash`
+
+### 3.3 curve/ - 曲线模块
+
+模块位置：`planar_geometry/curve/`
+
+#### 3.3.1 LineSegment（线段）
+**类**: LineSegment  
+**方法数**: 10个  
+**继承自**: Curve
+
+**核心方法**:
+- `length()` - 线段长度
+- `midpoint()` - 中点
+- `direction()` - 方向向量（归一化）
+- `contains_point()` - 点在线段上判断
+- `get_closest_point()` - 获取最近的点
+- `get_distance_to_point()` - 点到线段距离
+- `get_parameter()` - 参数 t 值
+
+#### 3.3.2 Line（直线）
+**类**: Line  
+**方法数**: 9个  
+**继承自**: Curve
+
+**核心方法**:
+- `length()` - 返回 ∞
+- `get_intersection()` - 与另一直线的交点
+- `get_distance_to_point()` - 点到直线距离
+- `get_closest_point()` - 垂足
+- `contains_point()` - 点在直线上判断
+
+#### 3.3.3 Vector2D（二维向量）
+**类**: Vector2D  
+**方法数**: 27个  
+**继承自**: Curve
+
+**核心方法**:
+- `length()` / `length_squared()` - 向量模长
+- `angle()` / `angle_rad()` - 角度（度/弧度）
+- `normalized()` - 归一化
+- `dot()` - 点积
+- `cross()` - 叉积（2D标量）
+- `perpendicular()` - 垂直向量
+- `rotated()` - 旋转
+- `projection()` - 投影到另一向量
+- `component()` - 在指定方向的分量
+- `is_zero()` / `equals()` - 相等性判断
+- 静态方法：`zero()`, `unit_x()`, `unit_y()`
+- 运算符重载
+
+### 3.4 surface/ - 曲面模块
+
+模块位置：`planar_geometry/surface/`
+
+#### 3.4.1 Rectangle（矩形）
+**类**: Rectangle  
+**方法数**: 15个  
+**继承自**: Surface
+
+**核心方法**:
+- `area()` - 面积
+- `perimeter()` - 周长
+- `contains_point()` - 点包含检测
+- `is_square()` - 是否为正方形
+- `get_center()` - 中心点
+- `get_bounds()` - 轴对齐边界框
+- 工厂方法：`from_bounds()`, `from_center_and_size()`
+
+#### 3.4.2 Circle（圆）
+**类**: Circle  
+**方法数**: 12个  
+**继承自**: Surface
+
+**核心方法**:
+- `area()` - 面积（πr²）
+- `perimeter()` - 周长（2πr）
+- `contains_point()` - 点包含检测
+- `get_center()` - 圆心
+- `get_bounds()` - 边界框
+- `get_circumference()` - 周长别名
+- `equals()` - 相等性判断
+- 工厂方法：`from_diameter()`
+
+#### 3.4.3 Polygon（多边形）
+**类**: Polygon  
+**方法数**: 23个  
+**继承自**: Surface
+
+**核心方法**:
+- `area()` - 面积（鞋带公式）
+- `perimeter()` - 周长
+- `contains_point()` - 射线投射判断
+- `is_convex()` - 凸性检测
+- `is_simple()` - 简单性检测（不自交）
+- `is_regular()` - 正多边形判断
+- `get_convex_hull()` - Graham Scan 凸包
+- `get_center()` / `centroid()` - 中心/质心
+- `get_edges()` / `get_vertices()` - 边和顶点
+- 工厂方法：`from_points()`, `regular()`, `triangle()`, `rectangle()`
+
+#### 3.4.4 Triangle（三角形）
+**类**: Triangle  
+**方法数**: 36个  
+**继承自**: Polygon
+
+**特殊方法**:
+- `get_circumcircle()` - 外接圆
+- `get_incicle()` - 内切圆
+- `circumradius()` - 外接圆半径
+- `inradius()` - 内切圆半径
+- `circumcenter()` - 外心
+- `incenter()` - 内心
+- 边长计算、角度判断
+- 工厂方法：`from_sides()`
+
+#### 3.4.5 Ellipse（椭圆）
+**类**: Ellipse  
+**方法数**: 17个  
+**继承自**: Surface
+
+**核心方法**:
+- `area()` - 面积
+- `perimeter()` - 周长（数值近似）
+- `contains_point()` - 点包含检测
+- `get_center()` - 中心
+- `get_bounds()` - 边界框
+- `get_point_at()` - 参数方程求点
+- `get_tangent_at()` - 切线向量
+
+### 3.5 utils/ - 工具函数模块
+
+模块位置：`planar_geometry/utils/geometry_utils.py`
+
+**函数数**: 18个
+
+#### 3.5.1 交点计算（4个函数）
 ```python
-# 线段交点
-def line_segment_intersection(s1: LineSegment, s2: LineSegment, tolerance: float = 1e-9) -> Optional[Point2D]:
-    """计算两条线段的交点"""
-
-# 直线交点
-def line_intersection(l1: Line, l2: Line, tolerance: float = 1e-9) -> Optional[Point2D]:
-    """计算两条直线的交点"""
-
-# 矩形交点
-def rectangle_intersection_points(r1: Rectangle, r2: Rectangle, tolerance: float = 1e-6) -> List[Point2D]:
-    """计算两个矩形边界的所有交点"""
-
-# 多边形交点
-def polygon_intersection_points(poly1: Polygon, poly2: Polygon, tolerance: float = 1e-6) -> List[Point2D]:
-    """计算两个多边形边界的所有交点"""
-
-# 点到线距离
-def point_to_segment_distance(point: Point2D, segment: LineSegment) -> float:
-    """计算点到线段的最短距离"""
-
-def point_to_segment_closest_point(point: Point2D, segment: LineSegment) -> Point2D:
-    """计算线段上离给定点最近的点"""
-
-def point_to_line_distance(point: Point2D, line: Line) -> float:
-    """计算点到直线的距离"""
-
-def point_to_line_closest_point(point: Point2D, line: Line) -> Point2D:
-    """计算直线上离给定点最近的点（垂足）"""
-
-# 点到面距离
-def point_to_rectangle_distance(point: Point2D, rect: Rectangle) -> float:
-    """计算点到矩形的最短距离"""
-
-def point_to_polygon_distance(point: Point2D, poly: Polygon) -> float:
-    """计算点到多边形的最短距离"""
-
-# 向量角度
-def angle_between(v1: Vector2D, v2: Vector2D) -> float:
-    """计算两个向量之间的夹角（度）"""
-
-def angle_between_rad(v1: Vector2D, v2: Vector2D) -> float:
-    """计算两个向量之间的夹角（弧度）"""
-
-def are_perpendicular(v1: Vector2D, v2: Vector2D, tolerance: float = 1e-6) -> bool:
-    """判断两个向量是否垂直"""
-
-def are_parallel(v1: Vector2D, v2: Vector2D, tolerance: float = 1e-6) -> bool:
-    """判断两个向量是否平行"""
-
-# 线段距离
-def segments_distance(s1: LineSegment, s2: LineSegment) -> float:
-    """计算两条线段之间的最短距离"""
-
-def segments_closest_points(s1: LineSegment, s2: LineSegment) -> Tuple[Point2D, Point2D]:
-    """计算两条线段之间的最近点对"""
-
-# 点集工具
-def bounding_box(points: List[Point2D]) -> Tuple[float, float, float, float]:
-    """计算点集的轴对齐边界框"""
-
-def centroid(points: List[Point2D]) -> Point2D:
-    """计算点集的重心"""
+line_segment_intersection(seg1, seg2, tolerance)  # 线段交点
+line_intersection(line1, line2, tolerance)         # 直线交点
+rectangle_intersection_points(rect1, rect2, ...)   # 矩形交点集
+polygon_intersection_points(poly1, poly2, ...)     # 多边形交点集
 ```
 
----
+#### 3.5.2 距离计算（8个函数）
+```python
+point_to_segment_distance(point, segment)          # 点到线段距离
+point_to_segment_closest_point(point, segment)     # 线段上最近的点
+point_to_line_distance(point, line)                # 点到直线距离
+point_to_line_closest_point(point, line)           # 直线上最近的点
+point_to_rectangle_distance(point, rect)           # 点到矩形距离
+point_to_polygon_distance(point, poly)             # 点到多边形距离
+segments_distance(seg1, seg2)                      # 线段间距离
+segments_closest_points(seg1, seg2)                # 线段最近点对
+```
+
+#### 3.5.3 角度计算（4个函数）
+```python
+angle_between(v1, v2)                              # 向量夹角（度）
+angle_between_rad(v1, v2)                          # 向量夹角（弧度）
+are_perpendicular(v1, v2, tolerance)               # 垂直性判断
+are_parallel(v1, v2, tolerance)                    # 平行性判断
+```
+
+#### 3.5.4 点集工具（2个函数）
+```python
+bounding_box(points)                               # 轴对齐边界框
+centroid(points)                                   # 点集重心
+```
+
+
 
 ## 4. 项目结构
 
@@ -778,5 +574,6 @@ center = centroid(points)  # Point2D(2.0, 2.67)
 
 ---
 
-**文档更新**: 2026-01-30  
-**下一步**: 继续添加更多几何元素和优化性能
+**文档更新**: 2026-01-31  
+**项目状态**: 模块化架构完成，所有 231 个测试通过，生产就绪 ✅
+
