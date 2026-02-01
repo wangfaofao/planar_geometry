@@ -154,12 +154,12 @@ class Polygon(Surface):
         return Polygon([p1, p2, p3, p4])
 
     def area(self) -> float:
-        r"""
+        """
         计算多边形面积
 
         说明:
             - 使用鞋带公式（Shoelace Formula）
-            - 面积公式: :math:`A = \frac{1}{2} \left| \sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i) \right|`
+            - 面积公式: :math:`A = \\frac{1}{2} \\left| \\sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i) \\right|`
 
         返回:
             float: 面积值

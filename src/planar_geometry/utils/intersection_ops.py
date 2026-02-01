@@ -57,12 +57,12 @@ from .geometry_utils import (
 def circle_line_intersection(
     circle: "Circle", line: "Line", tolerance: float = 1e-10
 ) -> List["Point2D"]:
-    r"""
+    """
     计算圆与直线的交点
 
     说明:
         - 使用点到直线距离判别式
-        - 距离公式: :math:`d = \frac{|ax + by + c|}{\sqrt{a^2 + b^2}}`
+        - 距离公式: :math:`d = \\frac{|ax + by + c|}{\\sqrt{a^2 + b^2}}`
         - 若 d > r: 无交点 (0 个)
         - 若 d = r: 相切 (1 个交点)
         - 若 d < r: 相交 (2 个交点)
