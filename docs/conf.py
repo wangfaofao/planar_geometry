@@ -98,8 +98,15 @@ intersphinx_mapping = {
 latex_elements = {
     "papersize": "letterpaper",
     "pointsize": "12pt",
-    "preamble": "",
+    "preamble": r"""
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\DeclareUnicodeCharacter{00A0}{\nobreakspace}
+""",
     "figure_align": "htbp",
+    "fncychap": "",
 }
 latex_documents = [
     ("index", "planar_geometry.tex", "planar_geometry Documentation", "Contributors", "manual"),
