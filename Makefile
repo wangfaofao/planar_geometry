@@ -110,12 +110,14 @@ check: lint type test
 
 # Documentation targets
 docs:
-	sphinx-build -W -b html -d docs/_build/doctrees docs docs/_build/html
+	.venv/bin/sphinx-build -W -b html -d docs/_build/doctrees docs docs/_build/html
 	@echo "✓ Documentation built in docs/_build/html"
 
-serve-docs: docs
-	cd docs/_build/html && python -m http.server 8000
-	@echo "Serving docs at http://localhost:8000"
+serve-docs:
+	@echo "📚 Starting documentation server..."
+	@echo "🌐 Visit http://localhost:8000"
+	@echo "⏹️  Press Ctrl+C to stop"
+	@./scripts/serve_docs.sh
 
 # Build & Publish targets
 build: clean
