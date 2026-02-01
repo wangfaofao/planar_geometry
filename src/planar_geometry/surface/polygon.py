@@ -168,7 +168,7 @@ class Polygon(Surface):
 
                 A = \\frac{1}{2} \\left| \\sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i) \\right|
 
-            其中约定 :math:`P_n = P_0`（首尾相连）。
+            其中约定 :math:`P_{n} = P_{0}` （首尾相连）。
 
             展开形式：
 
@@ -228,9 +228,9 @@ class Polygon(Surface):
 
             .. math::
 
-                L = \\sum_{i=0}^{n-1} |P_i P_{i+1}|
+                L = \\sum_{i=0}^{n-1} |P_{i} P_{i+1}|
 
-            其中 |P_i P_{i+1}| 表示相邻两个顶点之间的欧氏距离。
+            其中 :math:`|P_{i} P_{i+1}|` 表示相邻两个顶点之间的欧氏距离。
 
         返回:
             float: 多边形的周长
@@ -526,7 +526,7 @@ class Polygon(Surface):
             即：除了相邻边在顶点处的接触外，多边形的边不相交。
 
         计算方法:
-            检查所有非相邻的边对是否相交。对于边 Edge_i 和 Edge_j（其中 |i - j| >= 2），
+            检查所有非相邻的边对是否相交。对于边 Edge_i 和 Edge_j（其中 :math:`|i - j| \geq 2`），
             检查它们是否在端点之外相交。
 
             特殊处理：
