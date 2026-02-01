@@ -24,6 +24,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.imgmath",
     "sphinx_autodoc_typehints",
 ]
 
@@ -53,12 +55,32 @@ autodoc_typehints_format = "short"
 autodoc_member_order = "bysource"
 autoclass_content = "both"
 
+# -- Math rendering settings ------------------------------------------------
+mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+mathjax_options = {
+    "tex": {
+        "inlineMath": [["\\(", "\\)"]],
+        "displayMath": [["\\[", "\\]"]],
+    },
+    "svg": {
+        "fontCache": "global",
+    },
+}
+
+# For imgmath, set up LaTeX rendering if needed
+imgmath_image_format = "png"
+imgmath_font_size = 14
+imgmath_latex_preamble = r"""
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+"""
+
 # -- HTML output -------------------------------------------------------
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
     "canonical_url": "",
     "analytics_id": "",
-    "display_version": True,
     "prev_next_buttons_location": "bottom",
     "style_external_links": False,
     "vcs_pageview_mode": "",

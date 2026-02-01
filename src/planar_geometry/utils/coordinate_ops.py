@@ -49,7 +49,7 @@ if TYPE_CHECKING:
 def cartesian_to_polar(
     point: "Point2D", reference: "Point2D" = None, tolerance: float = 1e-10
 ) -> Tuple[float, float]:
-    """
+    r"""
     笛卡尔坐标转极坐标
 
     说明:
@@ -72,9 +72,9 @@ def cartesian_to_polar(
         - 雷达/方向数据
 
     算法原理:
-        1. 计算向量 v = point - reference
-        2. 距离 = |v|
-        3. 角度 = atan2(v.y, v.x) 转换为度数
+        1. 计算向量 :math:`\vec{v} = \text{point} - \text{reference}`
+        2. 距离 = :math:`|\vec{v}|`
+        3. 角度 = :math:`\text{atan2}(\vec{v}_y, \vec{v}_x)` 转换为度数
     """
     from planar_geometry.curve import Vector2D
     from planar_geometry.point import Point2D as Point2DClass
@@ -103,9 +103,7 @@ def cartesian_to_polar(
     return (distance, angle_deg)
 
 
-def polar_to_cartesian(
-    distance: float, angle_deg: float, reference: "Point2D" = None
-) -> "Point2D":
+def polar_to_cartesian(distance: float, angle_deg: float, reference: "Point2D" = None) -> "Point2D":
     """
     极坐标转笛卡尔坐标
 
@@ -245,9 +243,7 @@ def are_collinear(points: List["Point2D"], tolerance: float = 1e-10) -> bool:
         # 找第一个与第一点不同的点
         base_idx = 1
         while base_idx < len(points):
-            v_base = Vector2D(
-                points[base_idx].x - points[0].x, points[base_idx].y - points[0].y
-            )
+            v_base = Vector2D(points[base_idx].x - points[0].x, points[base_idx].y - points[0].y)
             if v_base.length() >= tolerance:
                 break
             base_idx += 1

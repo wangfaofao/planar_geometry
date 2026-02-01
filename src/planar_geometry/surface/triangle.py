@@ -41,7 +41,8 @@ class Triangle(Polygon):
     属性:
         vertices: List[Point2D] - 3个顶点
 
-    使用示例:
+    使用示例::
+
         # 从三个点创建
         tri = Triangle.from_points([
             Point2D(0, 0),
@@ -309,10 +310,7 @@ class Triangle(Polygon):
         a, b, c = self.get_side_lengths()
         sides = sorted([a, b, c])
 
-        return (
-            abs(sides[0] * sides[0] + sides[1] * sides[1] - sides[2] * sides[2])
-            < tolerance
-        )
+        return abs(sides[0] * sides[0] + sides[1] * sides[1] - sides[2] * sides[2]) < tolerance
 
     def is_equilateral(self, tolerance: float = 1e-6) -> bool:
         """
@@ -325,9 +323,7 @@ class Triangle(Polygon):
             bool: 是否为等边三角形
         """
         a, b, c = self.get_side_lengths()
-        return (
-            abs(a - b) < tolerance and abs(b - c) < tolerance and abs(a - c) < tolerance
-        )
+        return abs(a - b) < tolerance and abs(b - c) < tolerance and abs(a - c) < tolerance
 
     def is_isosceles(self, tolerance: float = 1e-6) -> bool:
         """
@@ -340,9 +336,7 @@ class Triangle(Polygon):
             bool: 是否为等腰三角形
         """
         a, b, c = self.get_side_lengths()
-        return (
-            abs(a - b) < tolerance or abs(b - c) < tolerance or abs(a - c) < tolerance
-        )
+        return abs(a - b) < tolerance or abs(b - c) < tolerance or abs(a - c) < tolerance
 
     def get_circumcircle(self) -> "Circle":
         """

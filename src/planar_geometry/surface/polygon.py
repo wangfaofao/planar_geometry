@@ -40,7 +40,8 @@ class Polygon(Surface):
     属性:
         vertices: List[Point2D] - 顶点列表（逆时针）
 
-    使用示例:
+    使用示例::
+
         # 三角形
         tri = Polygon([
             Point2D(0, 0),
@@ -93,9 +94,7 @@ class Polygon(Surface):
         return Polygon(points)
 
     @staticmethod
-    def regular(
-        n: int, center: "Point2D", radius: float, rotation: float = 0.0
-    ) -> "Polygon":
+    def regular(n: int, center: "Point2D", radius: float, rotation: float = 0.0) -> "Polygon":
         """
         创建正多边形（工厂方法）
 
@@ -142,9 +141,7 @@ class Polygon(Surface):
         return Polygon([p1, p2, p3])
 
     @staticmethod
-    def rectangle(
-        p1: "Point2D", p2: "Point2D", p3: "Point2D", p4: "Point2D"
-    ) -> "Polygon":
+    def rectangle(p1: "Point2D", p2: "Point2D", p3: "Point2D", p4: "Point2D") -> "Polygon":
         """
         从四个点创建四边形（工厂方法）
 
@@ -157,12 +154,12 @@ class Polygon(Surface):
         return Polygon([p1, p2, p3, p4])
 
     def area(self) -> float:
-        """
+        r"""
         计算多边形面积
 
         说明:
             - 使用鞋带公式（Shoelace Formula）
-            - area = |Σ(x_i * y_{i+1} - x_{i+1} * y_i)| / 2
+            - 面积公式: :math:`A = \frac{1}{2} \left| \sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i) \right|`
 
         返回:
             float: 面积值
@@ -318,9 +315,7 @@ class Polygon(Surface):
 
         for i in range(n):
             edge = self.get_edge(i)
-            if edge[0].equals(point, self.TOLERANCE) or edge[1].equals(
-                point, self.TOLERANCE
-            ):
+            if edge[0].equals(point, self.TOLERANCE) or edge[1].equals(point, self.TOLERANCE):
                 return True
             segment = LineSegment(edge[0], edge[1])
             if segment.contains_point(point, self.TOLERANCE):
@@ -415,9 +410,7 @@ class Polygon(Surface):
             length = self.vertices[i].distance_to(self.vertices[(i + 1) % n])
             edge_lengths.append(length)
 
-        length_std = math.sqrt(
-            sum((l - sum(edge_lengths) / n) ** 2 for l in edge_lengths) / n
-        )
+        length_std = math.sqrt(sum((l - sum(edge_lengths) / n) ** 2 for l in edge_lengths) / n)
         if length_std > self.TOLERANCE:
             return False
 
@@ -443,9 +436,7 @@ class Polygon(Surface):
         angle_std = 0.0
         if angles:
             angle_mean = sum(angles) / len(angles)
-            angle_std = math.sqrt(
-                sum((a - angle_mean) ** 2 for a in angles) / len(angles)
-            )
+            angle_std = math.sqrt(sum((a - angle_mean) ** 2 for a in angles) / len(angles))
 
         return angle_std < self.TOLERANCE
 

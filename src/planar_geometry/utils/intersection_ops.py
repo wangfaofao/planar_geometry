@@ -57,12 +57,12 @@ from .geometry_utils import (
 def circle_line_intersection(
     circle: "Circle", line: "Line", tolerance: float = 1e-10
 ) -> List["Point2D"]:
-    """
+    r"""
     计算圆与直线的交点
 
     说明:
         - 使用点到直线距离判别式
-        - 距离 d = |ax + by + c| / sqrt(a²+b²)
+        - 距离公式: :math:`d = \frac{|ax + by + c|}{\sqrt{a^2 + b^2}}`
         - 若 d > r: 无交点 (0 个)
         - 若 d = r: 相切 (1 个交点)
         - 若 d < r: 相交 (2 个交点)
@@ -339,8 +339,7 @@ def line_polygon_intersection_points(
 
     if dir_len_sq > tolerance:
         intersections.sort(
-            key=lambda p: ((p.x - p0.x) * direction.x + (p.y - p0.y) * direction.y)
-            / dir_len_sq
+            key=lambda p: ((p.x - p0.x) * direction.x + (p.y - p0.y) * direction.y) / dir_len_sq
         )
 
     return intersections
@@ -542,10 +541,7 @@ def ellipse_circle_intersection(
             # 检查是否已添加过这个点
             is_duplicate = False
             for existing_point in result:
-                if (
-                    abs(existing_point.x - x) < tolerance
-                    and abs(existing_point.y - y) < tolerance
-                ):
+                if abs(existing_point.x - x) < tolerance and abs(existing_point.y - y) < tolerance:
                     is_duplicate = True
                     break
 

@@ -44,7 +44,8 @@ class Rectangle(Surface):
         - 数据结构简单，直接暴露属性便于Cython优化
         - 提供工厂方法简化构造
 
-    使用示例:
+    使用示例::
+
         # 使用工厂方法
         rect = Rectangle.from_center_and_size(
             center=Point2D(0, 0),
@@ -78,9 +79,7 @@ class Rectangle(Surface):
         self.vertices = vertices
 
     @staticmethod
-    def from_center_and_size(
-        center: "Point2D", size: float, direction: "Vector2D"
-    ) -> "Rectangle":
+    def from_center_and_size(center: "Point2D", size: float, direction: "Vector2D") -> "Rectangle":
         """
         从中心点、尺寸和方向构造矩形（工厂方法）
 
@@ -110,9 +109,7 @@ class Rectangle(Surface):
         return Rectangle([v0, v1, v2, v3])
 
     @staticmethod
-    def from_bounds(
-        x_min: float, y_min: float, x_max: float, y_max: float
-    ) -> "Rectangle":
+    def from_bounds(x_min: float, y_min: float, x_max: float, y_max: float) -> "Rectangle":
         """
         从边界框创建矩形（工厂方法）
 
