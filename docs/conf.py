@@ -12,8 +12,8 @@ sys.path.insert(0, os.path.abspath("../src"))
 
 # -- Project information -----------------------------------------------
 project = "planar_geometry"
-copyright = f"{datetime.now().year}, Contributors"
-author = "Contributors"
+copyright = f"{datetime.now().year}, wangheng"
+author = "wangheng"
 release = "0.2.0"
 version = "0.2"
 
@@ -25,7 +25,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.mathjax",
-    "sphinx.ext.imgmath",
     "sphinx_autodoc_typehints",
 ]
 
@@ -58,29 +57,9 @@ autoclass_content = "both"
 # -- Math rendering settings ------------------------------------------------
 # 使用 MathJax 3 渲染 LaTeX 公式
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-mathjax_options = {
-    "tex": {
-        "inlineMath": [["\\(", "\\)"]],
-        "displayMath": [["\\[", "\\]"]],
-    },
-    "svg": {
-        "fontCache": "global",
-    },
-}
-
-# For imgmath, set up LaTeX rendering if needed
-imgmath_image_format = "png"
-imgmath_font_size = 14
-imgmath_latex_preamble = r"""
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsfonts}
-"""
 
 # 在 HTML 输出中包含自定义脚本来处理 .math 标签
-html_js_files = [
-    "mathjax-config.js",
-]
+html_js_files = []
 
 
 # 在构建时复制自定义的 mathjax-config.js 文件
@@ -102,20 +81,8 @@ def setup(app):
 
 
 # -- HTML output -------------------------------------------------------
-html_theme = "sphinx_rtd_theme"
-html_theme_options = {
-    "canonical_url": "",
-    "analytics_id": "",
-    "prev_next_buttons_location": "bottom",
-    "style_external_links": False,
-    "vcs_pageview_mode": "",
-    "style_nav_header_background": "#2c3e50",
-    "collapse_navigation": True,
-    "sticky_navigation": True,
-    "navigation_depth": 4,
-    "includehidden": True,
-    "titles_only": False,
-}
+html_theme = "alabaster"
+html_theme_options = {}
 html_static_path = ["_static"]
 html_logo = None
 html_favicon = None

@@ -172,6 +172,13 @@ class Polygon(Surface):
             area_sum += x1 * y2 - x2 * y1
         return abs(area_sum) / 2.0
 
+    def test_simple_math(self) -> float:
+        """
+        测试简单公式: :math:`E = mc^2`。
+        再测试你的复杂公式: :math:`A = \\frac{1}{2} | \\sum (x_i y_{i+1} - x_{i+1} y_i) |`。
+        """
+        return 0.0
+
     def perimeter(self) -> float:
         """
         计算多边形周长

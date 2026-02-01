@@ -13,3 +13,4 @@ Vector2D Class
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:

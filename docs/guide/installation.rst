@@ -2,13 +2,13 @@ Installation
 =============
 
 Requirements
------------
+============
 
 - Python 3.10 or higher
 - pip or another package manager
 
 From PyPI
---------
+=========
 
 ::
 
