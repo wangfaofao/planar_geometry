@@ -56,6 +56,7 @@ autodoc_member_order = "bysource"
 autoclass_content = "both"
 
 # -- Math rendering settings ------------------------------------------------
+# 使用 MathJax 3 渲染 LaTeX 公式
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 mathjax_options = {
     "tex": {
@@ -75,6 +76,30 @@ imgmath_latex_preamble = r"""
 \usepackage{amssymb}
 \usepackage{amsfonts}
 """
+
+# 在 HTML 输出中包含自定义脚本来处理 .math 标签
+html_js_files = [
+    "mathjax-config.js",
+]
+
+
+# 在构建时复制自定义的 mathjax-config.js 文件
+def copy_mathjax_config(app, exception):
+    """在生成文档后复制 MathJax 配置文件"""
+    import shutil
+    import os
+
+    if exception is None:  # 只在成功生成时复制
+        src = os.path.join(app.confdir, "_static_source", "mathjax-config.js")
+        dst = os.path.join(app.outdir, "_static", "mathjax-config.js")
+        if os.path.exists(src):
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copy2(src, dst)
+
+
+def setup(app):
+    app.connect("build-finished", copy_mathjax_config)
+
 
 # -- HTML output -------------------------------------------------------
 html_theme = "sphinx_rtd_theme"
