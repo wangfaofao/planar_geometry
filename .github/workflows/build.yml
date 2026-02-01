@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build Distribution
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install build tools
+      run: pip install --upgrade pip setuptools wheel build
+    
+    - name: Build distribution
+      run: python -m build
+    
+    - name: Check build artifacts
+      run: |
+        ls -lh dist/
+        tar -tzf dist/*.tar.gz | head -20
+        unzip -l dist/*.whl | head -20
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+        retention-days: 30

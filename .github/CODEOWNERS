@@ -1,0 +1,21 @@
+# Code owners for automatic review assignment
+# https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+# Default owners for everything
+* @wangheng
+
+# CI/CD workflows
+.github/workflows/ @wangheng
+
+# Documentation
+docs/ @wangheng
+
+# Configuration files
+pyproject.toml @wangheng
+setup.py @wangheng
+setup.cfg @wangheng
+tox.ini @wangheng
+Makefile @wangheng
+
+# Tests
+tests/ @wangheng

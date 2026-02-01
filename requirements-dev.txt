@@ -1,0 +1,11 @@
+# 开发工具依赖
+# 安装方式: pip install -r requirements-dev.txt
+
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.9.0
+ruff>=0.0.291
+mypy>=1.5.0
+pyright>=1.1.327
+isort>=5.12.0
+pre-commit>=3.4.0
